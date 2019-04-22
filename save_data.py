@@ -24,3 +24,11 @@ WebDriverWait(browser, 10).until(
 jobpage_element  = browser.find_element_by_css_selector("body > footer > ul > li:nth-child(1) > a")
 jobpage_url = jobpage_element.get_attribute('href')
 browser.get(jobpage_url)
+
+# take job info
+job_info = browser.find_elements_by_css_selector("#bbs-table > div:nth-child(3) > div:nth-child(3) > div.divTableCell.col4 > a")
+print(job_info[1])
+# for info in job_info:
+#     job_url = info.get_attribute('href')
+#     job_title = info.text
+#     print("title:", job_title, "link:", job_url)
