@@ -26,9 +26,12 @@ jobpage_url = jobpage_element.get_attribute('href')
 browser.get(jobpage_url)
 
 # take job info
-job_info = browser.find_elements_by_css_selector("#bbs-table > div:nth-child(3) > div:nth-child(3) > div.divTableCell.col4 > a")
-print(job_info[1])
-# for info in job_info:
-#     job_url = info.get_attribute('href')
-#     job_title = info.text
-#     print("title:", job_title, "link:", job_url)
+for n in range(3, 11, 2):
+    for i in range(1, 14):
+        job_info = browser.find_elements_by_css_selector("#bbs-table > div:nth-child({}) > div:nth-child({}) > div.divTableCell.col4 > a".format(n, i))
+        if n == 9 and i >= 12:
+            break
+        for info in job_info:
+            job_url = info.get_attribute('href')
+            job_title = info.text
+            print("title:", job_title, "link:", job_url)
