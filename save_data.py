@@ -2,6 +2,7 @@ from selenium.webdriver import Firefox, FirefoxOptions
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+import MySQLdb
 
 # use Firefox
 options = FirefoxOptions()
@@ -35,3 +36,25 @@ for n in range(3, 11, 2):
             job_url = info.get_attribute('href')
             job_title = info.text
             print("title:", job_title, "link:", job_url)
+
+
+
+# connect MySQL
+conn = MySQLdb.connect(
+    user='root',
+    password='',
+    host='localhost',
+    db="job_info"
+)
+
+# set cursor
+cur = conn.cursor
+
+# create table
+cur.execute('''
+    CREATE TABLE job_information (
+        job_id INTEGER PRYMARY KEY AUTO_INCREMENT,
+        name job_title,
+        url job_url
+    )
+''')
