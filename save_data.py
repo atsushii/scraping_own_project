@@ -37,14 +37,13 @@ for n in range(3, 11, 2):
             job_title = info.text
             print("title:", job_title, "link:", job_url)
 
-
-
 # connect MySQL
 conn = MySQLdb.connect(
     user='root',
-    password='',
+    password='password',
     host='localhost',
-    db="job_info"
+    db="",
+    port=3306
 )
 
 # set cursor
@@ -54,7 +53,7 @@ cur = conn.cursor
 cur.execute('''
     CREATE TABLE job_information (
         job_id INTEGER PRYMARY KEY AUTO_INCREMENT,
-        name job_title,
-        url job_url
+        name TEXT,
+        url TEXT
     )
 ''')
