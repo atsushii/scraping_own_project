@@ -4,6 +4,26 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 import MySQLdb
 
+# connect MySQL
+conn = MySQLdb.connect(
+    user='root',
+    password='password',
+    host='localhost',
+    db="job_information",
+)
+
+# set cursor
+cur = conn.cursor
+
+# create table
+cur.execute('''
+    CREATE TABLE job_information (
+        job_id INTEGER PRYMARY KEY AUTO_INCREMENT,
+        title TEXT,
+        url TEXT
+    )
+''')
+
 # use Firefox
 options = FirefoxOptions()
 options.add_argument('-headless')
@@ -27,6 +47,7 @@ jobpage_url = jobpage_element.get_attribute('href')
 browser.get(jobpage_url)
 
 # take job info
+job_list = []
 for n in range(3, 11, 2):
     for i in range(1, 14):
         job_info = browser.find_elements_by_css_selector("#bbs-table > div:nth-child({}) > div:nth-child({}) > div.divTableCell.col4 > a".format(n, i))
@@ -35,25 +56,11 @@ for n in range(3, 11, 2):
         for info in job_info:
             job_url = info.get_attribute('href')
             job_title = info.text
-            print("title:", job_title, "link:", job_url)
+            # insert data
+            cur.execute("INSERT INTO job_information(title, url) VALUES(%s,%s)", job_title, job_url)
 
-# connect MySQL
-conn = MySQLdb.connect(
-    user='root',
-    password='password',
-    host='localhost',
-    db="",
-    port=3306
-)
 
-# set cursor
-cur = conn.cursor
-
-# create table
-cur.execute('''
-    CREATE TABLE job_information (
-        job_id INTEGER PRYMARY KEY AUTO_INCREMENT,
-        name TEXT,
-        url TEXT
-    )
-''')
+# select job data
+cur.execute("SELECT * FROM job_information")
+for row in cur.fetchall():
+    print(row)
